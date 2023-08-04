@@ -7,6 +7,13 @@ const { v4: uuidv4 } = require('uuid');
 const { insertScreenshot } = require('./db');
 // const { ipcMain } = require('electron');
 
+
+const callMySelf = () => {
+    setTimeout(() => {
+       takeScreenshot()
+    }, 10000);
+}
+
 const takeScreenshot = async () => {
     try {
         const id = uuidv4();
@@ -20,16 +27,19 @@ const takeScreenshot = async () => {
 
         const imgPath = await screenshot({ filename: filename });
         console.log(`Screenshot saved to: ${imgPath}`);
-
         
-
+        
+        
         await insertScreenshot({ id, createdAt: new Date(), filename });
+        callMySelf();
    
         return filename;
     } catch (error) {
         console.error('Error saving screenshot:', error);
+        callMySelf();
         return null;
     }
+    
 };
 
 module.exports = {
@@ -130,4 +140,55 @@ module.exports = {
 //   takeScreenshot,
 //   takeMultipleScreenshots,
 //   stopScreenshotInterval,
+// };
+
+
+// const { app, ipcMain } = require('electron');
+// const screenshot = require('screenshot-desktop');
+// const path = require('path');
+// const fs = require('fs');
+// const { v4: uuidv4 } = require('uuid');
+// const { insertScreenshot } = require('./db');
+
+// let screenshotInterval;
+
+// const takeScreenshot = async () => {
+//   try {
+//     const id = uuidv4();
+//     const screenshotsDirectory = app.getPath('documents') + '/clockify/screenshots/';
+
+//     if (!fs.existsSync(screenshotsDirectory)) {
+//       fs.mkdirSync(screenshotsDirectory, { recursive: true });
+//     }
+
+//     const filename = path.join(screenshotsDirectory, `${id}.png`);
+
+//     const imgPath = await screenshot({ filename: filename });
+//     console.log(`Screenshot saved to: ${imgPath}`);
+
+//     await insertScreenshot({ id, createdAt: new Date(), filename });
+
+//     return filename;
+//   } catch (error) {
+//     console.error('Error saving screenshot:', error);
+//     return null;
+//   }
+// };
+
+// ipcMain.on('start-screenshot-interval', (event, screenshotsPerMinute) => {
+//   if (screenshotInterval) {
+//     clearInterval(screenshotInterval);
+//   }
+
+//   screenshotInterval = setInterval(() => {
+//     takeScreenshot();
+//   }, 60000 / screenshotsPerMinute); // 60000 ms is 1 minute, divide by screenshotsPerMinute to get the interval
+// });
+
+// ipcMain.on('stop-screenshot-interval', () => {
+//   clearInterval(screenshotInterval);
+// });
+
+// module.exports = {
+//   takeScreenshot,
 // };

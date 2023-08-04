@@ -2,18 +2,15 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Timer from './components/timer';
 import SettingsPopup from './components/SettingsPopup';
-import { ipcRenderer } from 'electron'; // Import ipcRenderer
-// const { ipcRenderer } = window.require('electron');
-
-
+const ipcRenderer = window.require("electron").ipcRenderer;
 function App() {
   const [screenshotsPerMinute, setScreenshotsPerMinute] = useState(5);
   const [showSettingsPopup, setShowSettingsPopup] = useState(false);
   useEffect(() => {
-    localStorage.setItem('screenshotsPerMinute', screenshotsPerMinute.toString());
+    localStorage.setItem('screenshotsPerMinute', screenshotsPerMinute);
   }, [screenshotsPerMinute]);
 
-  
+
   useEffect(() => {
     const savedScreenshotsPerMinute = localStorage.getItem('screenshotsPerMinute');
     if (savedScreenshotsPerMinute) {
@@ -23,7 +20,7 @@ function App() {
 
   useEffect(() => {
     // Send a request to the main process to get the screenshotsPerMinute value
-    const screenshotsPerMinuteFromMain = ipcRenderer.sendSync('get-screenshots-per-minute');
+    const screenshotsPerMinuteFromMain = ipcRenderer.sendSync('get-screenshots-per-minute', { 'screenshotsPerMinute': localStorage.getItem('screenshotsPerMinute')});
     setScreenshotsPerMinute(screenshotsPerMinuteFromMain);
   }, []);
 
@@ -32,28 +29,28 @@ function App() {
     setShowSettingsPopup(true);
   };
 
-  
+
 
   const handleSettingsClose = (newScreenshotsPerMinute) => {
     setShowSettingsPopup(false);
     if (newScreenshotsPerMinute !== undefined) {
       setScreenshotsPerMinute(newScreenshotsPerMinute);
       // Send the updated screenshotsPerMinute value to the main process using IPC
-      window.ipcRenderer.send('update-screenshots-per-minute', newScreenshotsPerMinute);
+      ipcRenderer.send('update-screenshots-per-minute', newScreenshotsPerMinute);
     }
   };
 
   return (
     <div className="App">
-      
-  <Timer />
-  {showSettingsPopup && (
+
+      <Timer />
+      {showSettingsPopup && (
         <SettingsPopup
           onClose={handleSettingsClose}
           currentScreenshotsPerMinute={screenshotsPerMinute}
         />
       )}
-  <button onClick={handleShowSettingsPopup}>Open Settings</button>
+      <button onClick={handleShowSettingsPopup}>Open Settings</button>
 
     </div>
   );
