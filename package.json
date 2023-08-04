@@ -1,0 +1,64 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Nitesh",
+  "description": "A simple Time Tracker Tool",
+  "main": "public/main.js",
+  "dependencies": {
+    "@google-cloud/storage": "^6.12.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "electron-is-dev": "^2.0.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "express": "^4.18.2",
+    "is-electron": "^2.2.2",
+    "path": "^0.12.7",
+    "ping": "^0.4.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
+    "react-scripts": "5.0.1",
+    "react-webpack": "^0.4.1",
+    "screenshot-desktop": "^1.15.0",
+    "sqlite": "^5.0.1",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron-dev": "electron .",
+    "electron:build:win": "electron-builder -w",
+    "electron:build:mac": "electron-builder -m"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "electron": "^25.4.0",
+    "electron-builder": "^24.6.3",
+    "path-browserify": "^1.0.1",
+    "tailwindcss": "^3.3.3"
+  }
+}
