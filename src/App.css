@@ -1,7 +1,13 @@
 .App {
+  display: flex;
   text-align: center;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
-/*
+
+.bg-red-500{
+  background-color: red;
+}
 
 .App-logo {
   height: 40vmin;
@@ -36,4 +42,5 @@
   to {
     transform: rotate(360deg);
   }
-} */
+}
+

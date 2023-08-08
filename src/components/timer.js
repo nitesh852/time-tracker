@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import clock from "../assets/clockify-logo.svg"
 import { FaPlay, FaStop } from 'react-icons/fa';
+const ipcRenderer = window.require("electron").ipcRenderer;
+
 const Timer = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [resetTimer, setResetTimer] = useState(false); 
@@ -30,7 +32,9 @@ const Timer = () => {
 
   const handleTimerStart = () => {
     if (isTimerRunning) {
+      //Send IPC to main process to stop screenshots timer
       setIsTimerRunning(false);
+      ipcRenderer.send('stop-taking-screenshots');
     } else {
       setIsTimerRunning(true); 
       if (!resetTimer) {
@@ -39,7 +43,11 @@ const Timer = () => {
         setHours(0); 
       }
       setResetTimer(false);
-    }
+      //send IPC to main process to start screenshot process and pass localStorage.getItem("screenshotsperMinute")
+      ipcRenderer.send('start-taking-screenshots', { // Send IPC message to start taking screenshots
+        screenshotsPerMinute: localStorage.getItem('screenshotsPerMinute')
+      });
+      }
   };
 
   return (
