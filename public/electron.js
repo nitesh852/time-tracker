@@ -6,12 +6,12 @@ require('./ipcListeners.js');
 
 const { processQueue } = require('./processQueue.js');
 
-autoUpdater.autoDownload = false;
-autoUpdater.autoInstallOnAppQuit = true;
 
 const checkForUpdates = () => {
+  console.log('checkForUpdates()')
   autoUpdater.on('update-available', () => {
     console.log("update-available");
+    autoUpdater.downloadUpdate();
   });
   autoUpdater.on('update-not-available', () => {
     console.log("update-not-available")
